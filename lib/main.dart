@@ -20,24 +20,48 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  var _totalScore = 0;
   var _questionIndex = 0;
   final _questions = const [
       {
-        'questionText': 'who?', 'answers': ['me','you','them', 'him'],
+        'questionText': 'who?', 
+        'answers': [
+          {'text': 'me', 'score': 10},
+          {'text': 'you', 'score': 8},
+          {'text': 'them', 'score': 6}, 
+          {'text': 'him', 'score': 4}],
       },
       {
-        'questionText': 'what?', 'answers': ['que?','hmmm?','uhhhh...'],
+        'questionText': 'what?', 
+        'answers': [
+          {'text': 'que?', 'score': 9},
+          {'text': 'hmmm?', 'score': 6},
+          {'text': 'uhhhh...', 'score': 3}],
       },
       {
-        'questionText': 'why?', 'answers': ['because I can','I wanted to', 'it\'s funny'],
+        'questionText': 'why?', 
+        'answers': [
+          {'text': 'because I can', 'score': 9},
+          {'text': 'I wanted to', 'score': 6}, 
+          {'text': 'it\'s funny', 'score': 3}],
       },
     ];
 
-  void _answerQuestions() {
+  void _answerQuestions(int score) {
+
+    _totalScore += score;
+
     setState(() {
       _questionIndex = _questionIndex + 1;
     });
     print('Answer Chosen!');
+  }
+
+  void _reset() {
+    setState(() {
+      _questionIndex = 0;
+      _totalScore = 0;
+    });
   }
 
   @override
@@ -48,7 +72,7 @@ class _MyAppState extends State<MyApp> {
         ),
         body: _questionIndex < _questions.length 
         ? Quiz(answerQuestions: _answerQuestions, questionIndex: _questionIndex, questions: _questions) 
-        : Result(),
+        : Result(_totalScore, _reset),
       )
     );
   }
